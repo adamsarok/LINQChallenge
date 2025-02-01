@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace LINQChallenge {
 	public class Challenge3 {
@@ -65,5 +66,25 @@ namespace LINQChallenge {
 				.Where(x => x.Length == 4 && !x.ToCharArray().Except(star).Any());
 			Assert.Equal(["arts", "rats", "tars"], result);
 		}
+
+		/// <summary>
+		/// Problem 5 - Initial Letters
+		/// From the following list of names
+		/// "Santi Cazorla, Per Mertesacker, Alan Smith, Thierry Henry, Alex Song, Paul Merson, Alexis Sánchez, Robert Pires, Dennis Bergkamp, Sol Campbell"
+		/// find any groups of people who share the same initials as each other.
+		/// </summary>
+		[Fact]
+		public void Problem5() {
+			string input = "Santi Cazorla, Per Mertesacker, Alan Smith, Thierry Henry, Alex Song, Paul Merson, Alexis Sánchez, Robert Pires, Dennis Bergkamp, Sol Campbell";
+			var result = input.Split(",")
+				.GroupBy(x => x.Trim().Split(" ")[0][0] + x.Trim().Split(" ")[1][0])
+				.Where(x => x.Count() > 1)
+				.Select(x => x.Select(x => x.Trim()))
+				.ToArray();
+			Assert.Equal(["Santi Cazorla", "Sol Campbell"], result[0]);
+			Assert.Equal(["Per Mertesacker", "Paul Merson"], result[1]);
+			Assert.Equal(["Alan Smith", "Alex Song", "Alexis Sánchez"], result[2]);
+		}
+
 	}
 }
