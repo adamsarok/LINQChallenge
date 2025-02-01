@@ -2,8 +2,6 @@
 
 namespace LINQChallenge {
 	public class Challenge3 {
-		//Solutions for LINQ Challenges by Mark Heath: https://markheath.net/post/2018/7/13/linq-challenge-3
-
 		/// <summary>
 		/// Problem 1 - Longest Sequence
 		/// The following string contains number of sales made per day in a month:
