@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace LINQChallenge {
@@ -86,5 +88,24 @@ namespace LINQChallenge {
 			Assert.Equal(["Alan Smith", "Alex Song", "Alexis Sánchez"], result[2]);
 		}
 
+		/// <summary>
+		/// Problem 6 - Video Editing
+		/// A video is two hours long exactly, and we want to make some edits, cutting out the following time ranges(expressed in H:MM:SS):
+		/// "0:00:00-0:00:05;0:55:12-1:05:02;1:37:47-1:37:51".
+		/// (You can assume that the input ranges are in order and contain no overlapping portions)
+		/// We would like to turn this into a sequence of time-ranges to keep.So in this example, the output should be:
+		/// "0:00:05-0:55:12;1:05:02-1:37:47;1:37:51-2:00:00"
+		/// </summary>
+		[Fact]
+		public void Problem6() {
+			string input = "0:00:00-0:00:05;0:55:12-1:05:02;1:37:47-1:37:51";
+			var result = input.Split([';', '-'])[(input.StartsWith("0:00:00") ? 1 : 0)..^(input.EndsWith("2:00:00") ? 1 : 0)]
+				.Prepend(input.StartsWith("0:00:00") ? null : "0:00:00")
+				.Append(input.EndsWith("2:00:00") ? null : "2:00:00")
+				.Where(x => !string.IsNullOrEmpty(x))
+				.Select((value, index) => new { value, index })
+				.Aggregate("", (acc, next) => acc + next.value + (next.index % 2 == 0 ? "-" : ";"))[..^1];
+			Assert.Equal("0:00:05-0:55:12;1:05:02-1:37:47;1:37:51-2:00:00", result);
+		}
 	}
 }
